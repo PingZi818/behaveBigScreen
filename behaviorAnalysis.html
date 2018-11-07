@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>行为分析</title>
+</head>
+<link rel="stylesheet" href="libs/perfect-scrollbar/perfect-scrollbar.css">
+<link rel="stylesheet" href="styles/common.css">
+<link rel="stylesheet" href="styles/behaviorAnalysis.css">
+<style>
+   
+    .ps--active-x > .ps__rail-x, .ps--active-y > .ps__rail-y{
+        background: transparent !important;
+        border:1px solid #0449a1;
+        border-radius:5px;
+        /*opacity: 1;*/
+        width:6px;
+        padding:5px 0;
+        height:200px !important
+    }
+    .ps__rail-y> .ps__thumb-y{
+        width:6px;
+        background-color: #044097;
+        border-radius:3px;
+        right:0
+    }
+    .ps__rail-y:hover > .ps__thumb-y, .ps__rail-y:focus > .ps__thumb-y, .ps__rail-y.ps--clicking .ps__thumb-y{
+        width:6px;
+        background-color: #044097;
+    }
+
+</style>
+<body>
+<div id="root">
+    <header>
+        <div class="date">
+            <div class="currentTime"></div>
+            <div class="cDate">
+                <div class="currentDate"></div>
+                <div class="currentWeek"></div>
+            </div>
+        </div>
+    </header>
+    <div class="main">
+        <div class="left">
+            <!-- 科学使用时长 -->
+            <div class="serviceTime">
+                <p class="module">
+                    <img src="imgs/line.png" alt="">
+                    <span class="title">教师行为统计</span>
+                </p>
+                <div class="tableContent">
+                    <table class="faultConditionTable">
+                        <thead>
+                        <tr>
+                            <th width="33.3%">行为</th>
+                            <th width="33.3%">次数</th>
+                            <th width="33.3%">时长</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <!-- 年级占比 -->
+            <div class="gradeRate">
+                <!-- <p class="module">
+                    <img src="../imgs/line.png" alt="">
+                    <span class="title">年级使用时长占比</span>
+                </p> -->
+                <div id="gradeRateChart"></div>
+            </div>
+            <!-- 排行榜 -->
+            <div class="faultCondition">
+                <p class="module">
+                    <img src="imgs/line.png" alt="">
+                    <span class="title">教师行为趋势</span>
+                </p>
+                <div id="serviceTimeChart"></div>
+
+            </div>
+        </div>
+        <div class="middle">
+            <!-- 省市地图 -->
+            <div class="map">
+                <div class="picture-analysis">
+                    <p class="module">
+                        <img src="imgs/line.png" alt="">
+                        <span class="title">画面分析次数</span>
+                    </p>
+                    <div class="statistics">
+                        <!--<span class="count-items">0</span>-->
+                        <!--<span class="count-items">0</span>-->
+                        <!--<span class="count-items">0</span>-->
+                        <!--<span class="count-items">1</span>-->
+                        <!--<span class="count-items">1</span>-->
+                        <!--<span class="count-items">1</span>-->
+                        <!--<span class="count-items">1</span>-->
+                        <!--<span class="count-items">1</span>-->
+                    </div>
+                </div>
+
+
+                <div class="maps real-time-statistics">
+                    <p class="module">
+                        <img src="imgs/line.png" alt="">
+                        <span class="title">实时统计</span>
+                    </p>
+                    <div class="analisis-con">
+                        <div id="teacher_analisis" class="teacher-analisis analisis-item">
+                            <div class="analaisis-title vertical-middle">
+                                <img src="imgs/teacher.png" alt="">
+                                <span class="role-name">教师</span>
+                                <span class="count-wrap ml10 mr10">
+                                        <span class="count-items"></span>
+                                        <span class="count-items"></span>
+                                    </span>
+                                人
+                            </div>
+                            <div class="teacher-actions actions-wrap clearfix">
+                                <div class="action-items blackboard-writing-action">板书行为</div>
+                                <div class="action-items demonstration-action">演示行为</div>
+                                <div class="action-items teaching-action">讲授行为</div>
+                                <div class="action-items patrol-action">巡视行为</div>
+                            </div>
+                        </div>
+                        <div id="student_analisis" class="student-analisis analisis-item">
+
+                            <div class="analaisis-title vertical-middle">
+                                <img src="imgs/student.png" alt="">
+                                <span class="role-name">学生</span>
+                                <span class="count-wrap ml10 mr10">
+                                        <span class="count-items"></span>
+                                        <span class="count-items"></span>
+                                    </span>
+                                人
+                            </div>
+                            <div class="student-actions actions-wrap clearfix">
+                                <div class="items listening">
+                                    <span class="stus-num"></span><br/>
+                                    <span class="action">听讲</span>
+                                </div>
+                                <div class="items thinking">
+                                    <span class="stus-num"></span><br/>
+                                    <span class="action">思考</span>
+                                </div>
+                                <div class="items reading">
+                                    <span class="stus-num"></span><br/>
+                                    <span class="action">阅读</span>
+                                </div>
+                                <div class="items talking">
+                                    <span class="stus-num"></span><br/>
+                                    <span class="action">讨论</span>
+                                </div>
+                                <div class="items handing-up">
+                                    <span class="stus-num"></span><br/>
+                                    <span class="action">举手</span>
+                                </div>
+                                <div class="items looking-around">
+                                    <span class="stus-num"></span><br/>
+                                    <span class="action">张望</span>
+                                </div>
+                                <div class="items sleeping">
+                                    <span class="stus-num"></span><br/>
+                                    <span class="action">瞌睡</span>
+                                </div>
+                                <div class="items relexing">
+                                    <span class="stus-num"></span><br/>
+                                    <span class="action">放松</span>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <!-- 近30天装备使用情况 -->
+            <div class="useSituation pos-relative">
+                <p class="module clearfix">
+                    <img src="imgs/line.png" alt="" >
+                    <span class="title">语音转写</span>
+                    <div class="fr micor-handles-container vertical-middle">
+                        <img src="imgs/audio_pic.gif" alt="" class="loading-pic">
+                        <div class="micro-action">
+                            语音输入
+                        </div>
+                    </div>
+                </p>
+                <ul id="useSituationChart" class="phonetic-transcription-list">
+                </ul>
+            </div>
+        </div>
+        <div class="right">
+            <!-- 使用情况 -->
+            <div class="useQing">
+                <p class="module">
+                    <img src="imgs/line.png" alt="">
+                    <span class="title">学生行为统计</span>
+                </p>
+                <p class="action-title">行为/人次</p>
+                <div id="student_behavioral_statistics">
+                    <div class="behavioral-list">
+                        <div class="items">
+                               <span class="bg-block">
+
+                               </span>
+                            <span class="fz18">听讲</span>
+
+                        </div>
+                        <div class="items">
+                               <span class="bg-block">
+
+                               </span>
+                            <span class="fz18">思考</span>
+
+                        </div>
+                        <div class="items">
+                               <span class="bg-block">
+
+                               </span>
+                            <span class="fz18">阅读</span>
+
+                        </div>
+                        <div class="items">
+                               <span class="bg-block">
+
+                               </span>
+                            <span class="fz18">讨论</span>
+
+                        </div>
+                    </div>
+                    <div class="mt10 behavioral-list">
+                        <div class="items">
+                               <span class="bg-block">
+
+                               </span>
+                            <span class="fz18">举手</span>
+
+                        </div>
+                        <div class="items">
+                               <span class="bg-block">
+
+                               </span>
+                            <span class="fz18">张望</span>
+
+                        </div>
+                        <div class="items">
+                               <span class="bg-block">
+
+                               </span>
+                            <span class="fz18">瞌睡</span>
+
+                        </div>
+                        <div class="items">
+                               <span class="bg-block">
+
+                               </span>
+                            <span class="fz18">放松</span>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- 近一小时班班通各时段使用情况 -->
+            <div class="hourUse">
+                <!-- <div id="hourUseChart"></div> -->
+                <div id="warnChart"></div>
+            </div>
+            <!-- 告警程度以及类别分布 -->
+            <div class="warn">
+                <p class="module">
+                    <img src="imgs/line.png" alt="">
+                    <span class="title">学生行为趋势</span>
+                </p>
+                <!-- <div id="warnChart"></div> -->
+                <div id="hourUseChart"></div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+<script src="libs/jquery-2.1.0.js"></script>
+<script src="libs/echarts.min.js"></script>
+<script src="libs/utils.js"></script>
+<script src="libs/perfect-scrollbar/perfect-scrollbar.min.js"></script>
+
+<script src="libs/tool.js"></script>
+<script src="js/index.js"></script>
+
+<script src="echartsConf/apply.js"></script>
+<script src="js/behaviorAnalysis.js"></script>
+<script src="js/main.js"></script>
+</html>
